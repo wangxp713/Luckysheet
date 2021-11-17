@@ -203,6 +203,7 @@ const dataVerificationCtrl = {
                                         <select id="data-verification-validity-select">
                                             <option value="card">${dvText.identificationNumber}</option>
                                             <option value="phone">${dvText.phoneNumber}</option>
+                                            <option value="number">${dvText.number}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1477,6 +1478,10 @@ const dataVerificationCtrl = {
             if(type2 == 'phone' && !/^1[3456789]\d{9}$/.test(cellValue)){
                 return false;
             }
+
+            if(type2 == 'number' && !/^[1-9]\d*\.{0,1}\d*|0\.\d*[1-9]\d*|[1-9]\d*$/.test(cellValue)){
+                return false;
+            }
         }
 
         return true;
@@ -1521,7 +1526,7 @@ const dataVerificationCtrl = {
                 optionHtml += `<div class="dropdown-List-item luckysheet-mousedown-cancel">${i}</div>`;
             });
         }
-
+        let clientHeight = $("#luckysheet-cell-main")[0].clientHeight
         $("#luckysheet-dataVerification-dropdown-List")
         .html(optionHtml)
         .prop("data-index", rowIndex + '_' + colIndex)
@@ -1530,6 +1535,8 @@ const dataVerificationCtrl = {
             'width': col - col_pre - 1,
             'left': col_pre,
             'top': row,
+            'height':clientHeight-((rowIndex+2)*19),
+            'overflow':"auto"
         });
 
         let myh = $("#luckysheet-dataVerification-dropdown-List").outerHeight();
